@@ -9,5 +9,7 @@ import java.util.*
 data class WeightEntity(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name="timestamp") val timestamp: Date?,
-    @ColumnInfo(name="value") val value: Float?
+    @ColumnInfo(name="value") val value: Float?,
+    @ColumnInfo(name="emoji") val emoji: String?,
+    @ColumnInfo(name="note") val note: String?
 )
