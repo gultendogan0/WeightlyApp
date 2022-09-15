@@ -1,5 +1,6 @@
 package com.gultendogan.weightlyapp.ui.home.adapter
 
+import android.icu.number.NumberFormatter.with
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +18,9 @@ class WeightHistoryViewHolder(
     private val binding = ItemWeightHistoryBinding.bind(view)
 
     fun bind(uiModel: WeightUIModel) = with(binding) {
-        binding.tvDate.text = uiModel.date.toFormat(DATE_FORMAT)
-        binding.tvWeight.text = String.format("%.2f", uiModel.value)
+        tvNote.text = uiModel.note
+        tvDate.text = uiModel.date.toFormat(DATE_FORMAT)
+        tvWeight.text = String.format("%.2f", uiModel.value)
 
         itemView.setOnClickListener {
             onClickWeight?.invoke(uiModel)
