@@ -1,4 +1,4 @@
-package com.gultendogan.weightlyapp.data.room
+package com.gultendogan.weightlyapp.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete

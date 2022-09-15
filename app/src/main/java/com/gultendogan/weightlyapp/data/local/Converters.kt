@@ -1,4 +1,4 @@
-package com.gultendogan.weightlyapp.data.room
+package com.gultendogan.weightlyapp.data.local
 
 import androidx.room.TypeConverter
 import java.util.*

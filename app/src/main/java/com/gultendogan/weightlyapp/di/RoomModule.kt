@@ -2,7 +2,7 @@ package com.gultendogan.weightlyapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.gultendogan.weightlyapp.data.room.AppDatabase
+import com.gultendogan.weightlyapp.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

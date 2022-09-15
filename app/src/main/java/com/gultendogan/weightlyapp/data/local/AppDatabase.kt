@@ -1,4 +1,4 @@
-package com.gultendogan.weightlyapp.data.room
+package com.gultendogan.weightlyapp.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
