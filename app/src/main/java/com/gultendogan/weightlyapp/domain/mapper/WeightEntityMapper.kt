@@ -4,7 +4,7 @@ import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.utils.extensions.orZero
 
-class WeightEntityMapper {
+object WeightEntityMapper {
 
     fun map(entity: WeightEntity) : WeightUIModel{
         return WeightUIModel(

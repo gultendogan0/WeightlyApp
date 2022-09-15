@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentHomeBinding
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
@@ -26,16 +27,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observe()
+
     }
 
     private fun observe(){
-
+        lifecycleScope.launchWhenStarted {
+            viewModel.uiState.collect(::setUIState)
+        }
     }
 
-    private fun initViews(){
-        binding.rvWeightHistory.adapter = adapterWeightHistory.apply {
+    private fun setUIState(uiState: HomeViewModel.UiState){
+        adapterWeightHistory.submitList(uiState.histories)
+    }
 
-        }
+    private fun initViews() = with(binding){
+        rvWeightHistory.adapter = adapterWeightHistory
     }
 
     private fun onClickWeight(weight : WeightUIModel){
