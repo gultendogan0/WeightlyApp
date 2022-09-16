@@ -5,11 +5,12 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 @Dao
 interface WeightDao {
-    @Query("SELECT * FROM weight")
+    @Query("SELECT * FROM weight ORDER BY timestamp DESC")
     fun getAll(): List<WeightEntity>
 
     @Query("SELECT * FROM weight WHERE uid IN (:userIds)")
@@ -26,4 +27,7 @@ interface WeightDao {
 
     @Delete
     fun delete(user: WeightEntity)
+
+    @Query("SELECT * FROM weight")
+    fun getDbAll(): Flow<List<WeightEntity>>
 }

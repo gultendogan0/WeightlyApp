@@ -3,6 +3,7 @@ package com.gultendogan.weightlyapp.di
 import android.content.Context
 import androidx.room.Room
 import com.gultendogan.weightlyapp.data.local.AppDatabase
+import com.gultendogan.weightlyapp.data.local.WeightDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +22,10 @@ object RoomModule{
             .fallbackToDestructiveMigration()
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideDao(
+        db: AppDatabase
+    ): WeightDao = db.weightDao()
 }

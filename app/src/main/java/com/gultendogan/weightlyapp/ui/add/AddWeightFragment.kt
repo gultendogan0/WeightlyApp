@@ -46,7 +46,7 @@ class AddWeightFragment : BottomSheetDialogFragment() {
                 when (event) {
                     AddWeightViewModel.Event.PopBackStack -> {
                         setFragmentResult(KEY_SHOULD_FETCH_WEIGHT_HISTORY, bundleOf())
-                        findNavController().popBackStack()
+                        //findNavController().popBackStack()
                     }
                     is AddWeightViewModel.Event.ShowToast -> {
                         context.showToast(event.textResId)

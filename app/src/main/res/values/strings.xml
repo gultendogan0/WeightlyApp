@@ -12,4 +12,6 @@
     <string name="save">Save</string>
 
     <string name="alert_blank_weight">Please make sure input your weight</string>
+
+    <string name="kg_format">%1$s kg</string>
 </resources>
