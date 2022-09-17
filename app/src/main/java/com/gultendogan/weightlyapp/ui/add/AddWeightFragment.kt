@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -12,10 +13,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentAddWeightBinding
-import com.gultendogan.weightlyapp.utils.extensions.nextDay
-import com.gultendogan.weightlyapp.utils.extensions.prevDay
-import com.gultendogan.weightlyapp.utils.extensions.showToast
-import com.gultendogan.weightlyapp.utils.extensions.toFormat
+import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
+import com.gultendogan.weightlyapp.ui.emoji.EmojiFragment
+import com.gultendogan.weightlyapp.utils.extensions.*
 import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -26,8 +26,11 @@ const val TAG_DATE_PICKER = "Tag_Date_Picker"
 
 @AndroidEntryPoint
 class AddWeightFragment : BottomSheetDialogFragment() {
+
     private val viewModel: AddWeightViewModel by viewModels()
     private var selectedDate = Date()
+    private var emoji: String = String.EMPTY
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,8 +53,9 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         btnNext.setOnClickListener {
             fetchDate(selectedDate.nextDay())
         }
-
-
+        btnEmoji.setOnClickListener {
+            findNavController().navigate(R.id.action_navigate_emoji)
+        }
 
         btnSelectDate.setOnClickListener {
             val datePicker =
@@ -66,10 +70,15 @@ class AddWeightFragment : BottomSheetDialogFragment() {
             datePicker.show(parentFragmentManager, TAG_DATE_PICKER);
         }
         btnSelectDate.text = selectedDate.toFormat(CURRENT_DATE_FORMAT)
-        btnSave.setOnClickListener {
+        btnSaveOrUpdate.setOnClickListener {
             val weight = tilInputWeight.text.toString()
             val note = tilInputNote.text.toString()
-            viewModel.addWeight(weight = weight, note = note, date = selectedDate)
+            viewModel.saveOrUpdateWeight(
+                weight = weight,
+                note = note,
+                emoji = emoji,
+                date = selectedDate
+            )
         }
     }
 
@@ -95,21 +104,41 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.uiState.collect(::setUIState)
         }
+
+        setFragmentResultListener(EmojiFragment.KEY_REQUEST_EMOJI) { _, bundle ->
+            emoji = bundle.getString(EmojiFragment.KEY_BUNDLE_EMOJI).orEmpty()
+            binding.btnEmoji.text =  getString(R.string.select_emoji_with_emoji_format, emoji)
+        }
     }
 
+
     private fun setUIState(uiState: AddWeightViewModel.UiState) = with(binding) {
-        val currentWeight = uiState.currentWeight
-        tilInputNote.setText(currentWeight?.note.orEmpty())
+        val weight = uiState.currentWeight
+        tilInputNote.setText(weight?.note.orEmpty())
         tilInputWeight.setText(uiState.currentWeight?.valueText.orEmpty())
-        if (currentWeight == null) {
-            btnSave.setText(R.string.save)
-            btnSave.icon =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_add_24)
-            btnSave.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_700))
+        setBtnSaveStatus(weight = weight)
+
+    }
+
+    private fun setBtnEmojiStatus(weight: WeightUIModel?) = with(binding.btnEmoji) {
+        if (weight == null) {
+            setText(R.string.select_emoji)
         } else {
-            btnSave.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_edit_24)
-            btnSave.setText(R.string.update)
-            btnSave.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
+            text = getString(R.string.select_emoji_with_emoji_format, weight.emoji)
+        }
+    }
+
+    private fun setBtnSaveStatus(weight: WeightUIModel?) = with(binding.btnSaveOrUpdate) {
+        if (weight == null) {
+            setText(R.string.save)
+            icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_add_24)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_700))
+
+
+        } else {
+            icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_edit_24)
+            setText(R.string.update)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
         }
     }
 

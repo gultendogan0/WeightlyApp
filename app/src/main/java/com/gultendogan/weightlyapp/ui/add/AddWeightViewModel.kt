@@ -8,6 +8,7 @@ import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.domain.mapper.WeightEntityMapper
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
+import com.gultendogan.weightlyapp.domain.usecase.SaveOrUpdateWeight
 import com.gultendogan.weightlyapp.ui.home.HomeViewModel
 import com.gultendogan.weightlyapp.utils.extensions.endOfDay
 import com.gultendogan.weightlyapp.utils.extensions.startOfDay
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddWeightViewModel @Inject constructor(
-    private val weightDao: WeightDao
+    private val weightDao: WeightDao,
+    private val saveOrUpdateWeight: SaveOrUpdateWeight
 ) : ViewModel() {
 
     sealed class Event {
@@ -39,7 +41,7 @@ class AddWeightViewModel @Inject constructor(
     private val eventChannel = Channel<Event>(Channel.BUFFERED)
     val eventsFlow = eventChannel.receiveAsFlow()
 
-    fun addWeight(weight: String, note: String, date: Date) {
+    fun saveOrUpdateWeight(weight: String, note: String, emoji: String, date: Date) {
         viewModelScope.launch(Dispatchers.IO) {
 
             when {
@@ -47,15 +49,12 @@ class AddWeightViewModel @Inject constructor(
                     eventChannel.send(Event.ShowToast(R.string.alert_blank_weight))
                 }
                 else -> {
-                    weightDao
-                        .insert(
-                            WeightEntity(
-                                timestamp = date,
-                                value = weight.toFloat(),
-                                emoji = "E",
-                                note = note
-                            )
-                        )
+                    saveOrUpdateWeight.invoke(
+                        weight = weight,
+                        note = note,
+                        emoji = emoji,
+                        date = date
+                    )
                     eventChannel.send(Event.PopBackStack)
                 }
             }

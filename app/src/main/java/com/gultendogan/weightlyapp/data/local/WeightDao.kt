@@ -1,10 +1,7 @@
 package com.gultendogan.weightlyapp.data.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
@@ -21,7 +18,10 @@ interface WeightDao {
     fun insertAll(vararg users: WeightEntity)
 
     @Insert
-    suspend fun insert(weight: WeightEntity)
+    suspend fun save(weight: WeightEntity)
+
+    @Update
+    suspend fun update(weight: WeightEntity)
 
     @Delete
     fun delete(user: WeightEntity)
