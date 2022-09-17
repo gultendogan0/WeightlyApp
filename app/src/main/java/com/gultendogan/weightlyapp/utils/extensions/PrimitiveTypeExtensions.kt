@@ -11,6 +11,7 @@ val Int.Companion.NOT_FOUND_INDEX : Int get() = -1
 
 val Int.Companion.ZERO : Int get() = 0
 
+val String.Companion.EMPTY: String get() = ""
 
 fun Int.dpToPx(context: Context): Int {
     val displayMetrics = context.resources.displayMetrics

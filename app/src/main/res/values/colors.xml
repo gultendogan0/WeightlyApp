@@ -15,4 +15,6 @@
     <color name="gray_100">#CDCDCD</color>
     <color name="gray_500">#616161</color>
     <color name="chart_background">#FFFFFFFF</color>
+
+    <color name="green">#4CAF50</color>
 </resources>

@@ -1,12 +1,10 @@
 package com.gultendogan.weightlyapp.ui.add
 
-import android.icu.number.NumberFormatter.with
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,16 +12,18 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentAddWeightBinding
+import com.gultendogan.weightlyapp.utils.extensions.nextDay
+import com.gultendogan.weightlyapp.utils.extensions.prevDay
 import com.gultendogan.weightlyapp.utils.extensions.showToast
 import com.gultendogan.weightlyapp.utils.extensions.toFormat
 import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.util.*
-
-//gultendogan.weightlyapp
 
 const val CURRENT_DATE_FORMAT = "dd MMM yyyy"
 const val TAG_DATE_PICKER = "Tag_Date_Picker"
+
 @AndroidEntryPoint
 class AddWeightFragment : BottomSheetDialogFragment() {
     private val viewModel: AddWeightViewModel by viewModels()
@@ -38,25 +38,21 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observe()
+        viewModel.fetchDate(selectedDate)
     }
 
-    private fun observe() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.eventsFlow.collect { event ->
-                when (event) {
-                    AddWeightViewModel.Event.PopBackStack -> {
-                        setFragmentResult(KEY_SHOULD_FETCH_WEIGHT_HISTORY, bundleOf())
-                        //findNavController().popBackStack()
-                    }
-                    is AddWeightViewModel.Event.ShowToast -> {
-                        context.showToast(event.textResId)
-                    }
-                }
-            }
-        }
-    }
 
     private fun initViews() = with(binding) {
+        btnPrev.setOnClickListener {
+            fetchDate(selectedDate.prevDay())
+        }
+
+        btnNext.setOnClickListener {
+            fetchDate(selectedDate.nextDay())
+        }
+
+
+
         btnSelectDate.setOnClickListener {
             val datePicker =
                 MaterialDatePicker.Builder.datePicker()
@@ -64,8 +60,8 @@ class AddWeightFragment : BottomSheetDialogFragment() {
                     .setSelection(selectedDate.time)
                     .build()
             datePicker.addOnPositiveButtonClickListener { timestamp ->
-                selectedDate = Date(timestamp)
-                btnSelectDate.text = selectedDate.toFormat(CURRENT_DATE_FORMAT)
+
+                fetchDate(Date(timestamp))
             }
             datePicker.show(parentFragmentManager, TAG_DATE_PICKER);
         }
@@ -77,7 +73,45 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         }
     }
 
-    companion object{
-        const val KEY_SHOULD_FETCH_WEIGHT_HISTORY = "request_weight_history"
+    private fun fetchDate(date: Date){
+        selectedDate = date
+        binding.btnSelectDate.text = selectedDate.toFormat(CURRENT_DATE_FORMAT)
+        viewModel.fetchDate(selectedDate)
     }
+
+    private fun observe() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.eventsFlow.collect { event ->
+                when (event) {
+                    AddWeightViewModel.Event.PopBackStack -> {
+                        findNavController().popBackStack()
+                    }
+                    is AddWeightViewModel.Event.ShowToast -> {
+                        context.showToast(event.textResId)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.uiState.collect(::setUIState)
+        }
+    }
+
+    private fun setUIState(uiState: AddWeightViewModel.UiState) = with(binding) {
+        val currentWeight = uiState.currentWeight
+        tilInputNote.setText(currentWeight?.note.orEmpty())
+        tilInputWeight.setText(uiState.currentWeight?.valueText.orEmpty())
+        if (currentWeight == null) {
+            btnSave.setText(R.string.save)
+            btnSave.icon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_add_24)
+            btnSave.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_700))
+        } else {
+            btnSave.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_edit_24)
+            btnSave.setText(R.string.update)
+            btnSave.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
+        }
+    }
+
+
 }

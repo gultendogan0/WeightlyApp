@@ -21,24 +21,21 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private var weightRepository: WeightRepository
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
-
     init {
         getAllDataFromDb()
     }
-
     private fun getAllDataFromDb() = viewModelScope.launch(Dispatchers.IO) {
         weightRepository.invoke().collectLatest { dbList ->
             _uiState.update {
                 it.copy(histories = dbList)
             }
         }
-
     }
 
     data class UiState(
-        var histories : List<WeightUIModel> = emptyList()
+        var histories: List<WeightUIModel?> = emptyList()
     )
+
 }

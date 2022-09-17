@@ -11,9 +11,13 @@ import javax.inject.Inject
 class WeightRepository @Inject constructor(
     private val dbDao: WeightDao
 ) {
-    operator fun invoke(): Flow<List<WeightUIModel>> = dbDao.getDbAll().map { weightList ->
+
+    operator fun invoke() = dbDao.getDbAll().map { weightList ->
         weightList.map {
             WeightEntityMapper.map(it)
+
         }
+
     }
+
 }
