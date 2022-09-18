@@ -64,6 +64,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         barChart.legend.isEnabled = false
     }
     private fun onClickWeight(weight: WeightUIModel) {
+        findNavController().navigate(HomeFragmentDirections.actionNavigateAddWeight(weight))
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_menu, menu)
@@ -94,4 +95,3 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.barChart.invalidate()
     }
 }
-

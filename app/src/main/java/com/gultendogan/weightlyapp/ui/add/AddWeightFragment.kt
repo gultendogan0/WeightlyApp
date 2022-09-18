@@ -9,6 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.gultendogan.weightlyapp.R
@@ -26,7 +27,7 @@ const val TAG_DATE_PICKER = "Tag_Date_Picker"
 
 @AndroidEntryPoint
 class AddWeightFragment : BottomSheetDialogFragment() {
-
+    private val args: AddWeightFragmentArgs by navArgs()
     private val viewModel: AddWeightViewModel by viewModels()
     private var selectedDate = Date()
     private var emoji: String = String.EMPTY
@@ -46,6 +47,9 @@ class AddWeightFragment : BottomSheetDialogFragment() {
 
 
     private fun initViews() = with(binding) {
+
+        args.weight?.date?.run(::fetchDate)
+
         btnPrev.setOnClickListener {
             fetchDate(selectedDate.prevDay())
         }
