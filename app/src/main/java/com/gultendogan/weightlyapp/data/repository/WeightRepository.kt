@@ -16,7 +16,7 @@ class WeightRepository @Inject constructor(
         weightList.map {
             WeightEntityMapper.map(it)
 
-        }
+        }.reversed()
 
     }
 

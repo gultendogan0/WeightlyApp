@@ -8,7 +8,7 @@ import com.gultendogan.weightlyapp.utils.extensions.orZero
 class WeightValueFormatter(var histories: List<WeightUIModel?>) : ValueFormatter() {
     override fun getBarLabel(barEntry: BarEntry?): String {
         val history = histories[barEntry?.x?.toInt().orZero]
-        return "${history?.emoji} ${history?.valueText}"
+        return history?.formattedValue.orEmpty()
     }
 
 }

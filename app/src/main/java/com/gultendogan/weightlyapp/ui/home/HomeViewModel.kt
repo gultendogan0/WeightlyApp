@@ -2,12 +2,14 @@ package com.gultendogan.weightlyapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mikephil.charting.data.BarEntry
 import com.gultendogan.weightlyapp.data.local.AppDatabase
 import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.data.repository.WeightRepository
 import com.gultendogan.weightlyapp.domain.mapper.WeightEntityMapper
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
+import com.gultendogan.weightlyapp.utils.extensions.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,15 +29,23 @@ class HomeViewModel @Inject constructor(
         getAllDataFromDb()
     }
     private fun getAllDataFromDb() = viewModelScope.launch(Dispatchers.IO) {
-        weightRepository.invoke().collectLatest { dbList ->
+        weightRepository.invoke().collectLatest { weightHistories ->
             _uiState.update {
-                it.copy(histories = dbList)
+                it.copy(histories = weightHistories,
+                    reversedHistories = weightHistories.asReversed() ,
+                    barEntries = weightHistories.mapIndexed { index, weight ->
+                        BarEntry(index.toFloat(), weight?.value.orZero())
+                    },
+                    shouldShowEmptyView = weightHistories.isEmpty())
             }
         }
     }
 
     data class UiState(
-        var histories: List<WeightUIModel?> = emptyList()
+        var histories: List<WeightUIModel?> = emptyList(),
+        var reversedHistories: List<WeightUIModel?> = emptyList(),
+        var barEntries: List<BarEntry> = emptyList(),
+        var shouldShowEmptyView: Boolean = false
     )
 
 }

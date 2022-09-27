@@ -21,11 +21,13 @@ import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.ui.add.AddWeightFragment
 import com.gultendogan.weightlyapp.ui.home.adapter.WeightHistoryAdapter
 import com.gultendogan.weightlyapp.ui.home.adapter.WeightItemDecorator
+import com.gultendogan.weightlyapp.ui.home.chart.WeightMarkerView
 import com.gultendogan.weightlyapp.ui.home.chart.WeightValueFormatter
 import com.gultendogan.weightlyapp.ui.home.chart.XAxisValueDateFormatter
 import com.gultendogan.weightlyapp.utils.extensions.EMPTY
 import com.gultendogan.weightlyapp.utils.extensions.orZero
 import com.gultendogan.weightlyapp.utils.viewBinding
+import com.yonder.statelayout.State
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -55,8 +57,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
     private fun setUIState(uiState: HomeViewModel.UiState) {
-        adapterWeightHistory.submitList(uiState.histories)
-        setChartData(uiState.histories)
+        if (uiState.shouldShowEmptyView){
+            binding.stateLayout.setState(State.EMPTY)
+        }else{
+            binding.stateLayout.setState(State.CONTENT)
+            adapterWeightHistory.submitList(uiState.reversedHistories)
+            setChartData(histories = uiState.histories, barEntries = uiState.barEntries)
+        }
     }
 
     private fun initViews() {
@@ -106,23 +113,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-    private fun setChartData(histories: List<WeightUIModel?>) {
-        val reversedHistory = histories.reversed()
-        val values = reversedHistory.mapIndexed { index, weight ->
-            BarEntry(index.toFloat(), weight?.value.orZero())
-        }
-
-        val set1 = BarDataSet(values, String.EMPTY)
-        set1.valueFormatter = WeightValueFormatter(reversedHistory)
+    private fun setChartData(histories: List<WeightUIModel?>, barEntries: List<BarEntry>) {
+        val set1 = BarDataSet(barEntries, String.EMPTY)
+        set1.valueFormatter = WeightValueFormatter(histories)
         set1.valueTextSize = 9f
         val xAxis = binding.barChart.xAxis
         xAxis.labelCount = histories.size
-        xAxis.valueFormatter = XAxisValueDateFormatter(reversedHistory)
+        xAxis.valueFormatter = XAxisValueDateFormatter(histories)
         set1.color = Color.BLUE
         val dataSets: java.util.ArrayList<IBarDataSet> = ArrayList()
         dataSets.add(set1)
         val data = BarData(dataSets)
         binding.barChart.data = data
+
+        val markerView = WeightMarkerView(requireContext(),histories)
+        markerView.chartView = binding.barChart
+        binding.barChart.marker = markerView
+
         binding.barChart.invalidate()
     }
 }
