@@ -27,4 +27,8 @@
 
     <string name="title_no_weight">Add weight from plus button on top right</string>
 
+    <string name="title_min_weight">En düşük kilo</string>
+    <string name="title_max_weight">En yüksek kilo</string>
+    <string name="title_average_weight">Ortalama kilo</string>
+
 </resources>
