@@ -6,29 +6,23 @@
     android:id="@+id/stateLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:textEmpty= "@string/title_no_weight"
+    app:textEmpty="@string/title_no_weight"
     tools:context=".ui.home.HomeFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvOutline"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/space_8"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintDimensionRatio="16:12"
+    <com.github.lzyzsd.circleprogress.ArcProgress
+        android:id="@+id/arc_progress"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_marginVertical="@dimen/space_16"
+        app:arc_bottom_text="MEMORY"
+        app:arc_progress="120"
+        app:arc_max="1000"
+        app:arc_suffix_text="kg"
+        app:arc_text_color="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/rvWeightHistory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/gray_100"
-        app:strokeWidth="1dp">
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/space_8"/>
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWeightHistory"
@@ -38,6 +32,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/cvOutline" />
-</com.yonder.statelayout.StateLayoutView>
+        app:layout_constraintTop_toBottomOf="@+id/arc_progress"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_weight_history" />
 
+</com.yonder.statelayout.StateLayoutView>

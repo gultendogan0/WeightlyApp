@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentDashboardBinding
+import com.gultendogan.weightlyapp.ui.home.chart.WeightBarChartInitializer
 import com.gultendogan.weightlyapp.uicomponents.InfoCardUIModel
 import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,8 +22,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observe()
         viewModel.fetchInsights()
+        viewModel.getWeightHistories()
+    }
+
+    private fun initViews(){
+        WeightBarChartInitializer.initBarChart(binding.barChart)
     }
 
     private fun observe() {
@@ -52,6 +59,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 description = R.string.title_min_weight,
                 backgroundColor = R.color.green
             )
+        )
+
+        WeightBarChartInitializer.setChartData(
+            barChart = binding.barChart,
+            histories = uiState.histories,
+            barEntries = uiState.barEntries,
+            context = requireContext()
         )
 
     }

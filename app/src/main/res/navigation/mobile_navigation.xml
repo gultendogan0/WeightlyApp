@@ -3,46 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_splash">
+
+    <fragment
+        android:id="@+id/navigation_splash"
+        android:name="com.gultendogan.weightlyapp.ui.splash.SplashFragment"
+        android:label="@string/title_splash"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_navigate_home"
+            app:destination="@id/navigation_home"/>
+
+        <action
+            android:id="@+id/action_navigate_on_boarding"
+            app:destination="@id/navigation_on_boarding"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_on_boarding"
+        android:name="com.gultendogan.weightlyapp.ui.onboarding.OnBoardingFragment"
+        android:label="@string/title_on_boarding"
+        tools:layout="@layout/fragment_on_boarding">
+
+        <action
+            android:id="@+id/action_navigate_home"
+            app:destination="@id/navigation_home"/>
+
+    </fragment>
+
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.gultendogan.weightlyapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
-
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigate_add_weight"
             app:destination="@id/navigation_add_weight">
-
         </action>
-
     </fragment>
-
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.gultendogan.weightlyapp.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
-
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.gultendogan.weightlyapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-
     <dialog
         android:id="@+id/navigation_add_weight"
         android:name="com.gultendogan.weightlyapp.ui.add.AddWeightFragment"
         android:label="@string/title_add_weight"
         tools:layout="@layout/fragment_add_weight" >
-
         <argument
             android:name="weight"
             app:nullable="true"
-            app:argType="com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel"
-            />
-
+            app:argType="com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel" />
         <action
             android:id="@+id/action_navigate_emoji"
             app:destination="@id/navigation_emoji">
