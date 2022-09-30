@@ -7,6 +7,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
+import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.ViewInfoCardBinding
 
 
@@ -23,6 +24,8 @@ class InfoCardView @JvmOverloads constructor(
     fun render(uiModel: InfoCardUIModel) = with(binding) {
         tvDescription.setText(uiModel.description)
         tvValue.text = uiModel.title
+        tvDescription.setTextColor(ContextCompat.getColor(context, uiModel.textColor))
+        tvValue.setTextColor(ContextCompat.getColor(context, uiModel.textColor))
         clRoot.setBackgroundColor(ContextCompat.getColor(context, uiModel.backgroundColor))
     }
 
@@ -32,5 +35,6 @@ class InfoCardView @JvmOverloads constructor(
 data class InfoCardUIModel(
     var title: String,
     @StringRes var description: Int,
-    @ColorRes var backgroundColor: Int
+    @ColorRes var backgroundColor: Int,
+    @ColorRes var textColor: Int = R.color.white
 )

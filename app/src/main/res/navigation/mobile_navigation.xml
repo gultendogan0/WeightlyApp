@@ -44,15 +44,11 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.gultendogan.weightlyapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.gultendogan.weightlyapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_settings"
+        android:name="com.gultendogan.weightlyapp.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
     <dialog
         android:id="@+id/navigation_add_weight"
         android:name="com.gultendogan.weightlyapp.ui.add.AddWeightFragment"
