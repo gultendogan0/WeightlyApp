@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         val noBottomNavigationIds = listOf(R.id.navigation_splash, R.id.navigation_on_boarding)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            //binding.navView.isGone = noBottomNavigationIds.contains(destination.id)
+            binding.navView.isGone = noBottomNavigationIds.contains(destination.id)
         }
 
         setupActionBarWithNavController(navController, appBarConfiguration)
