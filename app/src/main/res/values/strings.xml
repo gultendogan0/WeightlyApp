@@ -37,6 +37,8 @@
     <string name="title_max_weight">En yüksek kilo</string>
     <string name="title_average_weight">Ortalama kilo</string>
 
+    <string name="_continue">Continue</string>
+
     <string name="kg">kg</string>
 
 </resources>
