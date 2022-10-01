@@ -46,16 +46,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.uiState.collect(::setUIState)
         }
     }
-
     private fun setUIState(uiState: HomeViewModel.UiState) = with(binding) {
-        if (uiState.shouldShowEmptyView){
-            binding.stateLayout.setState(State.EMPTY)
-        }else{
+        if (uiState.shouldShowEmptyView) {
+            stateLayout.setState(State.EMPTY)
+        } else {
             stateLayout.setState(State.CONTENT)
             llInsightView.isVisible = uiState.shouldShowInsightView
             btnSeeAllHistory.isVisible = uiState.shouldShowAllWeightButton
             adapterWeightHistory.submitList(uiState.reversedHistories)
-
             ChartFeeder.setChartData(
                 chart = lineChart,
                 histories = uiState.histories,
@@ -96,7 +94,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     description = R.string.goal
                 )
             )
-
             icStart.render(
                 InfoCardUIModel(
                     title = uiState.startWeight,
@@ -105,7 +102,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         }
     }
-
     private fun initViews() = with(binding) {
         initWeightRecyclerview()
         ChartInitializer.initBarChart(lineChart)
@@ -113,7 +109,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(HomeFragmentDirections.actionNavigateHistory())
         }
     }
-
     private fun initWeightRecyclerview() = with(binding.rvWeightHistory) {
         adapter = adapterWeightHistory
         addItemDecoration(WeightItemDecorator(requireContext()))
@@ -124,8 +119,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         )
     }
-
-
     private fun onClickWeight(weight: WeightUIModel) {
         findNavController().navigate(HomeFragmentDirections.actionNavigateAddWeight(weight))
     }
@@ -138,10 +131,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 findNavController().navigate(HomeFragmentDirections.actionNavigateAddWeight(null))
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
 }

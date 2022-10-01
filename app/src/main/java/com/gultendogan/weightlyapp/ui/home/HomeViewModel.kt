@@ -29,7 +29,9 @@ class HomeViewModel @Inject constructor(
 
     init {
         getWeightHistories()
+        fetchInsights()
     }
+
 
     private fun fetchInsights(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,7 +61,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-
         val goalWeight = "${Hawk.get(Constants.Prefs.KEY_GOAL_WEIGHT, 0.0)}"
         _uiState.update {
             it.copy(
@@ -67,7 +68,6 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
-
     private fun getWeightHistories() = viewModelScope.launch(Dispatchers.IO) {
         weightRepository.invoke().collectLatest { weightHistories ->
             _uiState.update {
@@ -80,12 +80,12 @@ class HomeViewModel @Inject constructor(
                     shouldShowAllWeightButton = weightHistories.size > WEIGHT_LIMIT_FOR_HOME,
                     barEntries = weightHistories.mapIndexed { index, weight ->
                         BarEntry(index.toFloat(), weight?.value.orZero())
-                    },
-                    shouldShowEmptyView = weightHistories.isEmpty())
+                        },
+                    shouldShowEmptyView = weightHistories.isEmpty()
+                )
             }
         }
     }
-
     data class UiState(
         var maxWeight: String? = null,
         var minWeight: String? = null,
@@ -100,9 +100,7 @@ class HomeViewModel @Inject constructor(
         var shouldShowAllWeightButton: Boolean = false,
         var shouldShowInsightView: Boolean = false
     )
-
-    companion object{
+    companion object {
         const val WEIGHT_LIMIT_FOR_HOME = 10
     }
-
 }
