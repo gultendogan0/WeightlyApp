@@ -24,7 +24,7 @@ interface WeightDao {
     suspend fun update(weight: WeightEntity)
 
     @Delete
-    fun delete(user: WeightEntity)
+    suspend fun delete(user: WeightEntity)
 
     @Query("SELECT * FROM weight ORDER BY timestamp DESC")
     fun getDbAll(): Flow<List<WeightEntity>>
@@ -36,11 +36,11 @@ interface WeightDao {
     ): Float?
 
     @Query("SELECT AVG(value) as average FROM weight ORDER BY timestamp ASC")
-    fun getAverage(): Float?
+    fun getAverage(): Flow<Float>
 
-    @Query("SELECT MAX(value) as average FROM weight ORDER BY timestamp ASC")
-    fun getMax(): Float?
+    @Query("SELECT MAX(value) FROM weight ORDER BY timestamp ASC")
+    fun getMax(): Flow<Float>
 
-    @Query("SELECT MIN(value) as average FROM weight ORDER BY timestamp ASC")
-    fun getMin(): Float?
+    @Query("SELECT MIN(value)  FROM weight ORDER BY timestamp ASC")
+    fun getMin(): Flow<Float>
 }

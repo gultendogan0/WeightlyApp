@@ -18,7 +18,6 @@
     <string name="goal_weight">Goal weight</string>
     <string name="current_weight">Current weight</string>
     <string name="enter_current_weight">Enter current weight</string>
-    <string name="enter_goal_weight">Enter goal weight</string>
     <string name="save">Save</string>
 
     <string name="alert_blank_weight">Please make sure input your weight</string>
@@ -49,5 +48,16 @@
     <string name="start">Start</string>
     <string name="goal">Goal</string>
     <string name="current">Current</string>
+
+    <string name="title_history">History</string>
+
+    <string name="summary">Summary</string>
+    <string name="enter_current_height">Enter current height</string>
+    <string name="enter_goal_weight">Enter goal/desired weight</string>
+
+    <string name="lbs">lb</string>
+    <string name="cm">cm</string>
+
+    <string name="delete">Delete</string>
 
 </resources>

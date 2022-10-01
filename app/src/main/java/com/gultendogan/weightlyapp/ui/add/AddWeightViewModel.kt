@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.data.local.WeightDao
+import com.gultendogan.weightlyapp.domain.usecase.DeleteWeight
 import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.domain.mapper.WeightEntityMapper
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
@@ -27,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddWeightViewModel @Inject constructor(
     private val weightDao: WeightDao,
-    private val saveOrUpdateWeight: SaveOrUpdateWeight
+    private val saveOrUpdateWeight: SaveOrUpdateWeight,
+    private val deleteWeight: DeleteWeight
 ) : ViewModel() {
 
     sealed class Event {
@@ -40,6 +42,12 @@ class AddWeightViewModel @Inject constructor(
 
     private val eventChannel = Channel<Event>(Channel.BUFFERED)
     val eventsFlow = eventChannel.receiveAsFlow()
+
+    fun delete(date: Date){
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteWeight.invoke(date)
+        }
+    }
 
     fun saveOrUpdateWeight(weight: String, note: String, emoji: String, date: Date) {
         viewModelScope.launch(Dispatchers.IO) {

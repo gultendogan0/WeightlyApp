@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
 import com.orhanobut.hawk.Hawk
+import com.gultendogan.weightlyapp.utils.extensions.format
 import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.utils.Constants
 import com.gultendogan.weightlyapp.data.repository.WeightRepository
@@ -28,20 +29,41 @@ class HomeViewModel @Inject constructor(
 
     init {
         getWeightHistories()
-        fetchInsights()
     }
 
-    private fun fetchInsights() = viewModelScope.launch(Dispatchers.IO) {
-        val averageWeight = weightDao.getAverage()
-        val maxWeight = weightDao.getMax()
-        val minWeight = weightDao.getMin()
+    private fun fetchInsights(){
+        viewModelScope.launch(Dispatchers.IO) {
+            weightDao.getAverage().collectLatest { average ->
+                _uiState.update {
+                    it.copy(
+                        averageWeight = "${average.format(1)}",
+                    )
+                }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            weightDao.getMax().collectLatest { max ->
+                _uiState.update {
+                    it.copy(
+                        maxWeight = "$max"
+                    )
+                }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            weightDao.getMin().collectLatest { min ->
+                _uiState.update {
+                    it.copy(
+                        minWeight = "$min"
+                    )
+                }
+            }
+        }
+
         val goalWeight = "${Hawk.get(Constants.Prefs.KEY_GOAL_WEIGHT, 0.0)}"
         _uiState.update {
             it.copy(
-                goalWeight = goalWeight,
-                averageWeight = "$averageWeight",
-                minWeight = "$minWeight",
-                maxWeight = "$maxWeight"
+                goalWeight = goalWeight
             )
         }
     }
@@ -52,8 +74,10 @@ class HomeViewModel @Inject constructor(
                 it.copy(
                     histories = weightHistories,
                     startWeight = "${weightHistories.firstOrNull()?.formattedValue}",
+                    shouldShowInsightView = weightHistories.size > 1,
                     currentWeight = "${weightHistories.lastOrNull()?.formattedValue}",
-                    reversedHistories = weightHistories.asReversed(),
+                    reversedHistories = weightHistories.asReversed().take(WEIGHT_LIMIT_FOR_HOME),
+                    shouldShowAllWeightButton = weightHistories.size > WEIGHT_LIMIT_FOR_HOME,
                     barEntries = weightHistories.mapIndexed { index, weight ->
                         BarEntry(index.toFloat(), weight?.value.orZero())
                     },
@@ -72,7 +96,13 @@ class HomeViewModel @Inject constructor(
         var histories: List<WeightUIModel?> = emptyList(),
         var reversedHistories: List<WeightUIModel?> = emptyList(),
         var barEntries: List<BarEntry> = emptyList(),
-        var shouldShowEmptyView: Boolean = false
+        var shouldShowEmptyView: Boolean = false,
+        var shouldShowAllWeightButton: Boolean = false,
+        var shouldShowInsightView: Boolean = false
     )
+
+    companion object{
+        const val WEIGHT_LIMIT_FOR_HOME = 10
+    }
 
 }

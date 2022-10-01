@@ -17,3 +17,5 @@ fun Int.dpToPx(context: Context): Int {
     val displayMetrics = context.resources.displayMetrics
     return this * (displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
 }
+
+fun Float.format(digits: Int) = "%.${digits}f".format(this)

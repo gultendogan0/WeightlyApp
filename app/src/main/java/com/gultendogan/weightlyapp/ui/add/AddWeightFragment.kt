@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentAddWeightBinding
@@ -37,7 +39,9 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_add_weight, container, false)
+
     private val binding by viewBinding(FragmentAddWeightBinding::bind)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
@@ -46,6 +50,7 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         if (argWeight != null){
             fetchDate(argWeight.date)
         }else{
+            binding.btnNext.isGone = true
             viewModel.fetchDate(selectedDate)
         }
     }
@@ -65,11 +70,22 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         btnEmoji.setOnClickListener {
             findNavController().navigate(R.id.action_navigate_emoji)
         }
+        btnDelete.setOnClickListener {
+            viewModel.delete(date = selectedDate)
+            findNavController().popBackStack()
+        }
 
         btnSelectDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val startFrom = calendar.timeInMillis
+            val constraints = CalendarConstraints.Builder()
+                .setEnd(startFrom)
+                .build()
+
             val datePicker =
                 MaterialDatePicker.Builder.datePicker()
                     .setTitleText(getString(R.string.select_date))
+                    .setCalendarConstraints(constraints)
                     .setSelection(selectedDate.time)
                     .build()
             datePicker.addOnPositiveButtonClickListener { timestamp ->
@@ -95,6 +111,11 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         selectedDate = date
         binding.btnSelectDate.text = selectedDate.toFormat(CURRENT_DATE_FORMAT)
         viewModel.fetchDate(selectedDate)
+        val shouldHideNextButton =
+            selectedDate > Date() || selectedDate.toFormat(CURRENT_DATE_FORMAT) == Date().toFormat(
+                CURRENT_DATE_FORMAT
+            )
+        binding.btnNext.isGone = shouldHideNextButton
     }
 
     private fun observe() {
@@ -126,7 +147,8 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         tilInputNote.setText(weight?.note.orEmpty())
         tilInputWeight.setText(uiState.currentWeight?.valueText.orEmpty())
         setBtnSaveStatus(weight = weight)
-
+        setBtnEmojiStatus(weight = weight)
+        setDeleteButton(weight = weight)
     }
 
     private fun setBtnEmojiStatus(weight: WeightUIModel?) = with(binding.btnEmoji) {
@@ -135,6 +157,10 @@ class AddWeightFragment : BottomSheetDialogFragment() {
         } else {
             text = getString(R.string.select_emoji_with_emoji_format, weight.emoji)
         }
+    }
+
+    private fun setDeleteButton(weight: WeightUIModel?){
+        binding.btnDelete.isGone = weight == null
     }
 
     private fun setBtnSaveStatus(weight: WeightUIModel?) = with(binding.btnSaveOrUpdate) {

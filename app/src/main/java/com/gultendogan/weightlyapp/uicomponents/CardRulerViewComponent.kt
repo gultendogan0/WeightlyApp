@@ -10,31 +10,51 @@ import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.ViewCardRulerBinding
 
 
+enum class MeasureUnit{
+    KG,
+    LB
+}
+const val FLOOR_FOR_LB_TO_KG = 2.204f
 class CardRulerViewComponent @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : MaterialCardView(context, attrs, defStyleAttr) {
-
     private val binding: ViewCardRulerBinding by lazy {
         ViewCardRulerBinding.inflate(LayoutInflater.from(context), this, true)
     }
-
     private var shouldChangeRulerView = true
 
     var value: Float = 0.0f
 
+    var currentUnit = MeasureUnit.KG
+
+    fun setUnit(unit: MeasureUnit){
+        if (unit == MeasureUnit.LB){
+            if (currentUnit == MeasureUnit.KG){
+                value *= FLOOR_FOR_LB_TO_KG
+            }
+        }else{
+            if (currentUnit == MeasureUnit.LB){
+                value /= FLOOR_FOR_LB_TO_KG
+            }
+        }
+        currentUnit = unit
+        binding.tilInputCurrentWeight.setText(context.getString(R.string.kg_format, value))
+        binding.rulerViewCurrent.setValue(value)
+    }
+
     fun render(cardRuler: CardRuler) = with(binding) {
         val context = binding.root.context
-        rulerViewCurrent.setUnitStr(context.getString(R.string.kg))
-        tvTitle.setText(cardRuler.title)
+        rulerViewCurrent.setUnitStr(context.getString(cardRuler.unit))
         tfInputCurrentWeight.setHint(cardRuler.hint)
         rulerViewCurrent.setValueListener {
             shouldChangeRulerView = false
             value = it
             tilInputCurrentWeight.setText(context.getString(R.string.kg_format, it))
         }
-
+        rulerViewCurrent.setMaxValue(cardRuler.max)
+        rulerViewCurrent.setValue(cardRuler.num)
         tilInputCurrentWeight.addTextChangedListener {
             if (shouldChangeRulerView) {
                 val weight = it.toString().trim().toFloatOrNull()
@@ -45,13 +65,11 @@ class CardRulerViewComponent @JvmOverloads constructor(
             }
             shouldChangeRulerView = true
         }
-
     }
-
 }
-
-
 data class CardRuler(
-    @StringRes var title: Int,
-    @StringRes var hint: Int
+    @StringRes var unit: Int,
+    @StringRes var hint: Int,
+    var num: Float = 75.0f,
+    var max: Int = 350
 )
