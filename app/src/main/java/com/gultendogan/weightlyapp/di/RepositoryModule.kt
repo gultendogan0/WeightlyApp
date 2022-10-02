@@ -4,6 +4,7 @@ import com.gultendogan.weightlyapp.data.local.AppDatabase
 import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.data.repository.WeightRepository
+import com.gultendogan.weightlyapp.domain.mapper.WeightEntityMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -16,9 +17,10 @@ object RepositoryModule{
 
     @Provides
     fun provideWeightRepository(
-        dbDao: WeightDao
+        dbDao: WeightDao,
+        mapper: WeightEntityMapper
     ):WeightRepository {
-        return WeightRepository(dbDao)
+        return WeightRepository(dbDao,mapper)
     }
 
 }

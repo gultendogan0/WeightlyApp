@@ -22,8 +22,6 @@
 
     <string name="alert_blank_weight">Please make sure input your weight</string>
 
-    <string name="kg_format">%1$s kg</string>
-
     <string name="prev_day">Previous</string>
     <string name="next_day">Next</string>
     <string name="update">Update</string>
@@ -37,8 +35,6 @@
     <string name="title_no_weight">Add weight from plus button on top right</string>
 
     <string name="_continue">Continue</string>
-
-    <string name="kg">kg</string>
 
     <string name="title_min_weight">Minimum</string>
     <string name="title_max_weight">Maximum</string>
@@ -55,7 +51,6 @@
     <string name="enter_current_height">Enter current height</string>
     <string name="enter_goal_weight">Enter goal/desired weight</string>
 
-    <string name="lbs">lb</string>
     <string name="cm">cm</string>
 
     <string name="delete">Delete</string>
@@ -79,5 +74,13 @@
 
     <string name="alert_current_weight_must_different_with_goal_weight">Your current weight should be different from your target weight 🥳 </string>
     <string name="alert_weight_bigger_than_zero">Your weight should bigger than 0 🥳 </string>
+
+    <string name="kg_format" translatable="false">%1$s kg</string>
+    <string name="lb_format" translatable="false">%1$s lb</string>
+
+    <string name="kg" translatable="false">kg</string>
+    <string name="lbs" translatable="false">lb</string>
+    <string name="general">General</string>
+    <string name="unit">Unit</string>
 
 </resources>

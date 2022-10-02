@@ -11,7 +11,11 @@ import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentSettingsBinding
 import com.gultendogan.weightlyapp.ui.splash.SplashViewModel
 import com.gultendogan.weightlyapp.utils.viewBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.ListPreference
+import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
@@ -19,7 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
-    private val viewModel: SplashViewModel by viewModels()
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preference, rootKey)
@@ -27,7 +31,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        observe()
+    }
+
+    private fun observe() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.collect(::setUIState)
+        }
+    }
+
+    private fun setUIState(uiState: SettingsViewModel.UiState) {
+        val unitPreferences = findPreference<ListPreference>("unit")
+        unitPreferences?.value = MeasureUnit.findValue(uiState.unit).value
     }
 
     private fun initViews() {
@@ -46,6 +61,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 openUrl("https://forms.gle/kNxxSE4SS1xy2qRt7")
                 true
             }
+
+        findPreference<ListPreference>("unit")?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue is String) {
+                viewModel.updateUnit(newValue)
+            }
+            true
+        }
     }
     private fun openUrl(url : String){
         val viewIntent = Intent(

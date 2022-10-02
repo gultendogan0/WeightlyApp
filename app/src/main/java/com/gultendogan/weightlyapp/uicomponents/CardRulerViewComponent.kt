@@ -8,11 +8,15 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.card.MaterialCardView
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.ViewCardRulerBinding
+import com.gultendogan.weightlyapp.ui.home.chart.ChartType
 
 
-enum class MeasureUnit{
-    KG,
-    LB
+enum class MeasureUnit(var value: String) {
+    KG("kg"),
+    LB("lb");
+    companion object {
+        fun findValue(value: String?): MeasureUnit = values().find { it.value == value } ?: KG
+    }
 }
 const val FLOOR_FOR_LB_TO_KG = 2.204f
 class CardRulerViewComponent @JvmOverloads constructor(

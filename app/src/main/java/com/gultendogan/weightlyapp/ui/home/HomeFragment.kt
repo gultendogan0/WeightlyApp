@@ -21,6 +21,7 @@ import com.gultendogan.weightlyapp.uicomponents.InfoCardUIModel
 import com.gultendogan.weightlyapp.utils.Constants
 import com.orhanobut.hawk.Hawk
 import com.yonder.statelayout.State
+import com.gultendogan.weightlyapp.ui.home.chart.LimitLineFeeder
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -118,6 +119,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     description = R.string.start
                 )
             )
+            LimitLineFeeder.addLimitLineToLineChart(
+                requireContext(),
+                lineChart,
+                uiState.averageWeight?.toFloatOrNull(),
+                uiState.goalWeight?.toFloatOrNull()
+            )
+            LimitLineFeeder.addLimitLineToBarChart(
+                requireContext(),
+                barChart,
+                uiState.averageWeight?.toFloatOrNull(),
+                uiState.goalWeight?.toFloatOrNull()
+            )
         }
     }
     private fun initViews() = with(binding) {
@@ -137,7 +150,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-        val currentChartType = ChartType.valueOf(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0))
+        val currentChartType = ChartType.findValue(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0))
 
         if (currentChartType == ChartType.LINE){
             toggleButton.check(R.id.btnLineChart)
