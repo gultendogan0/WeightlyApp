@@ -41,6 +41,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 openUrl("https://github.com/gulten27/WeightlyApp")
                 true
             }
+        findPreference<Preference>("send_feedback")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                openUrl("https://forms.gle/kNxxSE4SS1xy2qRt7")
+                true
+            }
     }
     private fun openUrl(url : String){
         val viewIntent = Intent(

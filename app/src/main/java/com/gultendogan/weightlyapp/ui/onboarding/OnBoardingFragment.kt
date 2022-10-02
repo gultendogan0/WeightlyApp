@@ -13,6 +13,7 @@ import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
+import android.widget.Toast
 
 @AndroidEntryPoint
 class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
@@ -31,7 +32,11 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
         lifecycleScope.launchWhenStarted {
             viewModel.eventsFlow.collect { event ->
                 when (event) {
-                    OnBoardingViewModel.Event.NavigateToHome -> {
+                    is OnBoardingViewModel.Event.Message -> {
+                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    is OnBoardingViewModel.Event.NavigateToHome -> {
                         findNavController().navigate(OnBoardingFragmentDirections.actionNavigateHome())
                     }
                 }
@@ -43,18 +48,10 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
     private fun initViews() = with(binding) {
         cardRulerCurrent.render(CardRuler(unit = R.string.kg, hint = R.string.enter_current_weight))
         cardRulerGoal.render(CardRuler(unit = R.string.kg, hint = R.string.enter_goal_weight))
-        cardRulerHeight.render(
-            CardRuler(
-                unit = R.string.cm,
-                hint = R.string.enter_current_height,
-                num = 175f,
-                max = 250
-            )
-        )
+
         btnContinue.setOnClickListener {
             val currentWeight: Float = cardRulerCurrent.value
             val goalWeight: Float = cardRulerGoal.value
-            val currentHeight: Float = cardRulerHeight.value
             val unit = if (toggleButton.checkedButtonId == R.id.button1) {
                 MeasureUnit.KG
             } else {
@@ -63,7 +60,6 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
             viewModel.save(
                 currentWeight = currentWeight,
                 goalWeight = goalWeight,
-                currentHeight = currentHeight,
                 unit = unit
             )
         }
