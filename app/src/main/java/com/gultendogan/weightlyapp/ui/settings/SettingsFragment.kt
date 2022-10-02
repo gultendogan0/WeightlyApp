@@ -10,6 +10,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentSettingsBinding
 import com.gultendogan.weightlyapp.ui.splash.SplashViewModel
+import androidx.preference.CheckBoxPreference
+import com.gultendogan.weightlyapp.BuildConfig
 import com.gultendogan.weightlyapp.utils.viewBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
@@ -20,8 +22,6 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
-
-    private val binding by viewBinding(FragmentSettingsBinding::bind)
 
     private val viewModel: SettingsViewModel by viewModels()
 
@@ -42,6 +42,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setUIState(uiState: SettingsViewModel.UiState) {
         val unitPreferences = findPreference<ListPreference>("unit")
+        val limitLinePreference = findPreference<CheckBoxPreference>("show_limit_lines")
+        limitLinePreference?.isChecked = uiState.shouldShowLimitLine
         unitPreferences?.value = MeasureUnit.findValue(uiState.unit).value
     }
 
@@ -62,13 +64,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
+        findPreference<Preference>("rate_us")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+                    )
+                )
+                true
+            }
+
         findPreference<ListPreference>("unit")?.setOnPreferenceChangeListener { _, newValue ->
             if (newValue is String) {
                 viewModel.updateUnit(newValue)
             }
             true
         }
+
+        findPreference<CheckBoxPreference>("show_limit_lines")?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue is Boolean) {
+                viewModel.updateLimitLine(newValue)
+            }
+            true
+        }
+
     }
+
     private fun openUrl(url : String){
         val viewIntent = Intent(
             "android.intent.action.VIEW",

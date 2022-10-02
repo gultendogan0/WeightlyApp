@@ -7,6 +7,8 @@ import java.util.*
 
 @Dao
 interface WeightDao {
+    @Query("SELECT * FROM weight ORDER BY timestamp DESC LIMIT 1")
+    fun fetchLastWeight() : List<WeightEntity>
     @Query("SELECT * FROM weight WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<WeightEntity>
     @Query("SELECT * FROM weight WHERE  timestamp BETWEEN :startDate AND :endDate")

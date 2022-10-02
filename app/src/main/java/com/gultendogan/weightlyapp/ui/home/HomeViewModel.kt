@@ -18,18 +18,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.gultendogan.weightlyapp.domain.usecase.GetUserGoal
+import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
+import kotlin.math.abs
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private var weightRepository: WeightRepository,
-    private val weightDao: WeightDao
+    private val weightDao: WeightDao,
+    private val getUserGoal: GetUserGoal
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
 
     init {
-        getWeightHistories()
         fetchInsights()
     }
 
@@ -69,7 +72,8 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
-    private fun getWeightHistories() = viewModelScope.launch(Dispatchers.IO) {
+
+    fun getWeightHistories() = viewModelScope.launch(Dispatchers.IO) {
         weightRepository.invoke().collectLatest { weightHistories ->
             _uiState.update {
                 it.copy(
@@ -82,6 +86,8 @@ class HomeViewModel @Inject constructor(
                     barEntries = weightHistories.mapIndexed { index, weight ->
                         BarEntry(index.toFloat(), weight?.value.orZero())
                         },
+                    userGoal = getUserGoal(),
+                    shouldShowLimitLine = Hawk.get(Constants.Prefs.KEY_CHART_LIMIT_LINE,true),
                     chartType =  ChartType.findValue(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0)),
                     shouldShowEmptyView = weightHistories.isEmpty()
                 )
@@ -114,7 +120,9 @@ class HomeViewModel @Inject constructor(
         var shouldShowEmptyView: Boolean = false,
         var shouldShowAllWeightButton: Boolean = false,
         var shouldShowInsightView: Boolean = false,
-        var chartType: ChartType = ChartType.LINE
+        var shouldShowLimitLine : Boolean = false,
+        var chartType: ChartType = ChartType.LINE,
+        var userGoal: String ? = null
     )
     companion object {
         const val WEIGHT_LIMIT_FOR_HOME = 5

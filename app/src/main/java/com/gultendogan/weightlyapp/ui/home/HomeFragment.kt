@@ -68,6 +68,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     barEntries = uiState.barEntries,
                     context = requireContext()
                 )
+
             }else{
                 lineChart.isVisible = false
                 barChart.isVisible = true
@@ -77,6 +78,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     barEntries = uiState.barEntries,
                     context = requireContext()
                 )
+            }
+
+            if (uiState.shouldShowLimitLine) {
+                LimitLineFeeder.addLimitLineToLineChart(
+                    requireContext(),
+                    lineChart,
+                    uiState.averageWeight?.toFloatOrNull(),
+                    uiState.goalWeight?.toFloatOrNull()
+                )
+                LimitLineFeeder.addLimitLineToBarChart(
+                    requireContext(),
+                    barChart,
+                    uiState.averageWeight?.toFloatOrNull(),
+                    uiState.goalWeight?.toFloatOrNull()
+                )
+            }else{
+                LimitLineFeeder.removeLimitLines(lineChart = lineChart, barChart = barChart)
             }
 
             infoCardAverage.render(
@@ -119,20 +137,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     description = R.string.start
                 )
             )
-            LimitLineFeeder.addLimitLineToLineChart(
-                requireContext(),
-                lineChart,
-                uiState.averageWeight?.toFloatOrNull(),
-                uiState.goalWeight?.toFloatOrNull()
-            )
-            LimitLineFeeder.addLimitLineToBarChart(
-                requireContext(),
-                barChart,
-                uiState.averageWeight?.toFloatOrNull(),
-                uiState.goalWeight?.toFloatOrNull()
-            )
+
+            uiState.goalWeight?.toFloatOrNull()?.run {
+                lineChart.axisLeft.axisMinimum = this
+                barChart.axisLeft.axisMinimum = this
+            }
+
+            uiState.userGoal?.run(tvGoalDescription::setText)
+
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getWeightHistories()
+    }
+
     private fun initViews() = with(binding) {
         initWeightRecyclerview()
         ChartInitializer.initLineChart(lineChart)
@@ -149,12 +169,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.changeChartType(ChartType.LINE)
             }
         }
-
         val currentChartType = ChartType.findValue(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0))
 
-        if (currentChartType == ChartType.LINE){
+        if (currentChartType == ChartType.LINE) {
             toggleButton.check(R.id.btnLineChart)
-        }else{
+        } else {
             toggleButton.check(R.id.btnBarChart)
         }
     }
