@@ -18,6 +18,48 @@
         app:textEmpty="@string/title_no_weight"
         tools:context=".ui.home.HomeFragment">
 
+        <TextView
+            android:id="@+id/tvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/space_8"
+            android:layout_marginStart="@dimen/space_4"
+            android:text="@string/your_progress"
+            android:textAppearance="?android:textAppearanceLarge"
+            app:layout_constraintBottom_toTopOf="@+id/cvOutline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_4"
+            app:checkedButton="@+id/btnLineChart"
+            app:layout_constraintBottom_toBottomOf="@+id/tvProgress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvProgress"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/btnLineChart"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/line_chart"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+            <Button
+                android:id="@+id/btnBarChart"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bar_chart"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvOutline"
             android:layout_width="match_parent"
@@ -28,13 +70,24 @@
             app:layout_constraintDimensionRatio="16:12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/tvProgress">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/space_8" />
+                android:layout_margin="@dimen/space_8">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -45,7 +98,6 @@
             android:layout_marginStart="@dimen/space_4"
             android:text="@string/summary"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/llContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cvOutline" />
@@ -138,7 +190,6 @@
             android:layout_marginBottom="8dp"
             android:text="@string/history"
             android:textAppearance="?android:textAppearanceLarge"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/rvWeightHistory"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_insight_view" />
@@ -160,17 +211,27 @@
             app:layout_constraintTop_toTopOf="@+id/tvHistory">
         </Button>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHistory"
+            android:layout_height="wrap_content">
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWeightHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/space_4"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHistory"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="10"
             tools:listitem="@layout/item_weight_history" />
+
+        </androidx.cardview.widget.CardView>
+
+
     </com.yonder.statelayout.StateLayoutView>
+
 </androidx.core.widget.NestedScrollView>

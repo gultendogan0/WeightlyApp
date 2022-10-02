@@ -10,6 +10,7 @@ import com.gultendogan.weightlyapp.utils.Constants
 import com.gultendogan.weightlyapp.data.repository.WeightRepository
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.utils.extensions.orZero
+import com.gultendogan.weightlyapp.ui.home.chart.ChartType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,11 +82,25 @@ class HomeViewModel @Inject constructor(
                     barEntries = weightHistories.mapIndexed { index, weight ->
                         BarEntry(index.toFloat(), weight?.value.orZero())
                         },
+                    chartType =  ChartType.valueOf(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0)),
                     shouldShowEmptyView = weightHistories.isEmpty()
                 )
             }
         }
     }
+
+    fun changeChartType(chartType: ChartType){
+        val currentChartType=  ChartType.valueOf(Hawk.get(Constants.Prefs.KEY_CHART_TYPE,0))
+        if (chartType != currentChartType){
+            Hawk.put(Constants.Prefs.KEY_CHART_TYPE,chartType.value)
+            _uiState.update {
+                it.copy(
+                    chartType = chartType
+                )
+            }
+        }
+    }
+
     data class UiState(
         var maxWeight: String? = null,
         var minWeight: String? = null,
@@ -98,9 +113,10 @@ class HomeViewModel @Inject constructor(
         var barEntries: List<BarEntry> = emptyList(),
         var shouldShowEmptyView: Boolean = false,
         var shouldShowAllWeightButton: Boolean = false,
-        var shouldShowInsightView: Boolean = false
+        var shouldShowInsightView: Boolean = false,
+        var chartType: ChartType = ChartType.LINE
     )
     companion object {
-        const val WEIGHT_LIMIT_FOR_HOME = 10
+        const val WEIGHT_LIMIT_FOR_HOME = 5
     }
 }

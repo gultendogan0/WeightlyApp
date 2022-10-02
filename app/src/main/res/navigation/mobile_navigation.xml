@@ -13,6 +13,9 @@
 
         <action
             android:id="@+id/action_navigate_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"
             app:destination="@id/navigation_home"/>
 
         <action
@@ -54,13 +57,19 @@
         android:id="@+id/navigation_settings"
         android:name="com.gultendogan.weightlyapp.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+            tools:layout="@layout/fragment_settings" />
 
     <dialog
         android:id="@+id/navigation_history"
         android:name="com.gultendogan.weightlyapp.ui.history.HistoryFragment"
         android:label="@string/title_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+
+        <action
+            android:id="@+id/action_navigate_add_weight"
+            app:destination="@id/navigation_add_weight" />
+    </dialog>
+
 
     <dialog
         android:id="@+id/navigation_add_weight"

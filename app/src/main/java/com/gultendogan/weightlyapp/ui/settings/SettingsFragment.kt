@@ -1,7 +1,12 @@
 package com.gultendogan.weightlyapp.ui.settings
 
-import androidx.fragment.app.Fragment
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentSettingsBinding
 import com.gultendogan.weightlyapp.ui.splash.SplashViewModel
@@ -10,10 +15,39 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : PreferenceFragmentCompat() {
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
     private val viewModel: SplashViewModel by viewModels()
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.root_preference, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        findPreference<Preference>("developer")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                openUrl("https://www.linkedin.com/in/gülten-doğan-3a453721b/")
+                true
+            }
+        findPreference<Preference>("source_code")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                openUrl("https://github.com/gulten27/WeightlyApp")
+                true
+            }
+    }
+    private fun openUrl(url : String){
+        val viewIntent = Intent(
+            "android.intent.action.VIEW",
+            Uri.parse(url)
+        )
+        startActivity(viewIntent)
+    }
 
 }
