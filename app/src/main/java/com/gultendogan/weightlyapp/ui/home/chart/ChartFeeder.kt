@@ -7,6 +7,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.components.Legend
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.utils.extensions.EMPTY

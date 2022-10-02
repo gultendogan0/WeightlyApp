@@ -22,23 +22,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_settings,
                 R.id.navigation_splash,
                 R.id.navigation_on_boarding
             )
         )
 
-        val noBottomNavigationIds = listOf(R.id.navigation_splash, R.id.navigation_on_boarding)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.navView.isGone = noBottomNavigationIds.contains(destination.id)
-        }
-
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
