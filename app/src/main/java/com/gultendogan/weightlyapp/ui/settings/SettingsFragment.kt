@@ -8,16 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.gultendogan.weightlyapp.R
-import com.gultendogan.weightlyapp.databinding.FragmentSettingsBinding
-import com.gultendogan.weightlyapp.ui.splash.SplashViewModel
 import androidx.preference.CheckBoxPreference
 import com.gultendogan.weightlyapp.BuildConfig
-import com.gultendogan.weightlyapp.utils.viewBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint

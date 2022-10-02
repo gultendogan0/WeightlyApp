@@ -2,14 +2,10 @@ package com.gultendogan.weightlyapp.domain.mapper
 
 import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
-import com.gultendogan.weightlyapp.utils.extensions.EMPTY
 import com.gultendogan.weightlyapp.utils.extensions.orZero
 import com.gultendogan.weightlyapp.utils.extensions.toFormat
-import com.gultendogan.weightlyapp.utils.extensions.format
-import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.domain.decider.DifferenceDecider
 import com.gultendogan.weightlyapp.domain.decider.UnitFormatDecider
-import java.lang.StringBuilder
 import java.util.*
 import javax.inject.Inject
 

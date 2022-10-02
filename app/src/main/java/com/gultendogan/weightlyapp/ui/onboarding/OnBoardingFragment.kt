@@ -11,7 +11,6 @@ import com.gultendogan.weightlyapp.databinding.FragmentOnBoardingBinding
 import com.gultendogan.weightlyapp.uicomponents.CardRuler
 import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
 import android.widget.Toast
 

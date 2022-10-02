@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.gultendogan.weightlyapp.R
 import com.orhanobut.hawk.Hawk
 import com.gultendogan.weightlyapp.domain.usecase.SaveOrUpdateWeight
-import com.gultendogan.weightlyapp.ui.home.chart.ChartType.Companion.findValue
 import com.gultendogan.weightlyapp.utils.Constants
 import com.gultendogan.weightlyapp.utils.extensions.EMPTY
 import com.gultendogan.weightlyapp.uicomponents.MeasureUnit

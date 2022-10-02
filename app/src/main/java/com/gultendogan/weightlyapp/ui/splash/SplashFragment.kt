@@ -10,7 +10,6 @@ import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.FragmentSplashBinding
 import com.gultendogan.weightlyapp.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SplashFragment : Fragment(R.layout.fragment_splash) {

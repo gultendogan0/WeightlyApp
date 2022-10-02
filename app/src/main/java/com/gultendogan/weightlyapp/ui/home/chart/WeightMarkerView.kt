@@ -1,6 +1,5 @@
 package com.gultendogan.weightlyapp.ui.home.chart
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
 import com.github.mikephil.charting.components.MarkerView

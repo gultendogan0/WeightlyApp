@@ -4,28 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
 import com.orhanobut.hawk.Hawk
-import com.gultendogan.weightlyapp.utils.extensions.format
 import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.utils.Constants
-import com.gultendogan.weightlyapp.data.repository.WeightRepository
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.utils.extensions.orZero
 import com.gultendogan.weightlyapp.ui.home.chart.ChartType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.gultendogan.weightlyapp.domain.usecase.GetUserGoal
-import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
-import kotlin.math.abs
+import com.gultendogan.weightlyapp.domain.usecase.GetAllWeights
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private var weightRepository: WeightRepository,
+    private var getAllWeights: GetAllWeights ,
     private val weightDao: WeightDao,
     private val getUserGoal: GetUserGoal
 ) : ViewModel() {
@@ -37,44 +31,22 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun fetchInsights(){
+    private fun fetchInsights() {
         viewModelScope.launch(Dispatchers.IO) {
-            weightDao.getAverage().collectLatest { average ->
+            combine(weightDao.getMax(),weightDao.getMin(),weightDao.getAvg()){ max, min, avg ->
                 _uiState.update {
                     it.copy(
-                        averageWeight = "${average?.format(1)}",
+                        minWeight = "$min",
+                        maxWeight = "$max",
+                        averageWeight = "$avg"
                     )
                 }
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            weightDao.getMax().collectLatest { max ->
-                _uiState.update {
-                    it.copy(
-                        maxWeight = "$max"
-                    )
-                }
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            weightDao.getMin().collectLatest { min ->
-                _uiState.update {
-                    it.copy(
-                        minWeight = "$min"
-                    )
-                }
-            }
-        }
-        val goalWeight = "${Hawk.get(Constants.Prefs.KEY_GOAL_WEIGHT, 0.0)}"
-        _uiState.update {
-            it.copy(
-                goalWeight = goalWeight
-            )
+            }.stateIn(this)
         }
     }
 
-    fun getWeightHistories() = viewModelScope.launch(Dispatchers.IO) {
-        weightRepository.invoke().collectLatest { weightHistories ->
+    fun fetchHome() = viewModelScope.launch(Dispatchers.IO) {
+        getAllWeights().collectLatest { weightHistories ->
             _uiState.update {
                 it.copy(
                     histories = weightHistories,
@@ -89,11 +61,13 @@ class HomeViewModel @Inject constructor(
                     userGoal = getUserGoal(),
                     shouldShowLimitLine = Hawk.get(Constants.Prefs.KEY_CHART_LIMIT_LINE,true),
                     chartType =  ChartType.findValue(Hawk.get(Constants.Prefs.KEY_CHART_TYPE, 0)),
-                    shouldShowEmptyView = weightHistories.isEmpty()
+                    shouldShowEmptyView = weightHistories.isEmpty(),
+                    goalWeight = "${Hawk.get(Constants.Prefs.KEY_GOAL_WEIGHT, 0.0)}"
                 )
             }
         }
     }
+
 
     fun changeChartType(chartType: ChartType){
         val currentChartType=  ChartType.findValue(Hawk.get(Constants.Prefs.KEY_CHART_TYPE,0))
@@ -106,6 +80,8 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+
 
     data class UiState(
         var maxWeight: String? = null,

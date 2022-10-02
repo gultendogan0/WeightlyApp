@@ -20,8 +20,8 @@ import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.ui.emoji.EmojiFragment
 import com.gultendogan.weightlyapp.utils.extensions.*
 import com.gultendogan.weightlyapp.utils.viewBinding
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.util.*
 
 const val CURRENT_DATE_FORMAT = "dd MMM yyyy"
@@ -80,6 +80,7 @@ class AddWeightFragment : BottomSheetDialogFragment() {
             val startFrom = calendar.timeInMillis
             val constraints = CalendarConstraints.Builder()
                 .setEnd(startFrom)
+                .setValidator(DateValidatorPointBackward.now())
                 .build()
 
             val datePicker =

@@ -6,11 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.data.local.WeightDao
 import com.gultendogan.weightlyapp.domain.usecase.DeleteWeight
-import com.gultendogan.weightlyapp.data.local.WeightEntity
 import com.gultendogan.weightlyapp.domain.mapper.WeightEntityMapper
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.domain.usecase.SaveOrUpdateWeight
-import com.gultendogan.weightlyapp.ui.home.HomeViewModel
 import com.gultendogan.weightlyapp.utils.extensions.endOfDay
 import com.gultendogan.weightlyapp.utils.extensions.startOfDay
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -2,11 +2,8 @@ package com.gultendogan.weightlyapp.ui.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.data.BarEntry
-import com.gultendogan.weightlyapp.data.repository.WeightRepository
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
-import com.gultendogan.weightlyapp.ui.home.HomeViewModel
-import com.gultendogan.weightlyapp.utils.extensions.orZero
+import com.gultendogan.weightlyapp.domain.usecase.GetAllWeights
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HistoryViewModel @Inject constructor(private var weightRepository: WeightRepository) :
+class HistoryViewModel @Inject constructor(private var getAllWeights: GetAllWeights) :
     ViewModel() {
 
 
@@ -29,7 +26,7 @@ class HistoryViewModel @Inject constructor(private var weightRepository: WeightR
     }
 
     private fun getWeightHistories() = viewModelScope.launch(Dispatchers.IO) {
-        weightRepository.invoke().collectLatest { weightHistories ->
+        getAllWeights().collectLatest { weightHistories ->
             _uiState.update {
                 it.copy(
                     histories = weightHistories.reversed()

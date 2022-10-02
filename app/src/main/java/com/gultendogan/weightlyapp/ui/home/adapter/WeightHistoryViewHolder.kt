@@ -1,11 +1,9 @@
 package com.gultendogan.weightlyapp.ui.home.adapter
 
-import android.icu.number.NumberFormatter.with
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
-import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.databinding.ItemWeightHistoryBinding
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.utils.extensions.toFormat
