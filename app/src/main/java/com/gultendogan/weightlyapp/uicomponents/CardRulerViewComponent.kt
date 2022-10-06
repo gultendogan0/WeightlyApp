@@ -18,7 +18,6 @@ enum class MeasureUnit(var value: String) {
     }
 }
 const val FLOOR_FOR_LB_TO_KG = 2.204f
-
 class CardRulerViewComponent @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
