@@ -23,6 +23,7 @@
             app:destination="@id/navigation_on_boarding"/>
 
     </fragment>
+
     <fragment
         android:id="@+id/navigation_on_boarding"
         android:name="com.gultendogan.weightlyapp.ui.onboarding.OnBoardingFragment"
@@ -53,6 +54,9 @@
         <action
             android:id="@+id/action_navigate_settings"
             app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/navigation_listFragment"
+            app:destination="@id/listFragment" />
 
     </fragment>
 
@@ -95,5 +99,10 @@
         android:name="com.gultendogan.weightlyapp.ui.emoji.EmojiFragment"
         android:label="@string/title_emoji"
         tools:layout="@layout/fragment_emoji" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.gultendogan.weightlyapp.ui.list.ListFragment"
+        android:label="@string/lists"
+        tools:layout="@layout/fragment_list" />
 
 </navigation>

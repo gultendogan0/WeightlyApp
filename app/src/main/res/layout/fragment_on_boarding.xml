@@ -33,8 +33,8 @@
         android:id="@+id/cardRulerCurrent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_16"
-        android:layout_marginBottom="@dimen/space_8"
+        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginBottom="@dimen/space_4"
         app:cardElevation="0dp">
 
     </com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent>
@@ -43,9 +43,24 @@
         android:id="@+id/cardRulerGoal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/space_8"
+        android:layout_marginVertical="@dimen/space_4"
         app:cardElevation="0dp">
+    </com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent>
 
+    <com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent
+        android:id="@+id/cardRulerHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/space_4"
+        app:cardElevation="0dp">
+    </com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent>
+
+    <com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent
+        android:id="@+id/cardRulerAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/space_4"
+        app:cardElevation="0dp">
     </com.gultendogan.weightlyapp.uicomponents.CardRulerViewComponent>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
@@ -72,6 +87,32 @@
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/genderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:checkedButton="@+id/button1"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/buttonFemale"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="@string/female" />
+
+        <Button
+            android:id="@+id/buttonMale"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="@string/male" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         style="@style/Widget.MaterialComponents.Button.Icon"
@@ -80,6 +121,7 @@
         android:layout_marginVertical="@dimen/space_8"
         android:layout_marginTop="@dimen/space_8"
         android:text="@string/_continue"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btnEmoji"
         app:layout_constraintStart_toStartOf="@+id/btnEmoji"

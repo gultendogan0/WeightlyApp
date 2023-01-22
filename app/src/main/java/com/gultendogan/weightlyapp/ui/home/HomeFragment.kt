@@ -203,6 +203,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 findNavController().navigate(HomeFragmentDirections.actionNavigateSettings())
                 true
             }
+            R.id.action_list ->{
+                findNavController().navigate(HomeFragmentDirections.navigationListFragment())
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

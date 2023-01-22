@@ -47,6 +47,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_on_boarding) {
     private fun initViews() = with(binding) {
         cardRulerCurrent.render(CardRuler(unit = R.string.kg, hint = R.string.enter_current_weight))
         cardRulerGoal.render(CardRuler(unit = R.string.kg, hint = R.string.enter_goal_weight))
+        cardRulerHeight.render(CardRuler(unit = R.string.cm, hint = R.string.enter_current_height))
+        cardRulerAge.render(CardRuler(unit = R.string.age, hint = R.string.enter_current_age))
 
         btnContinue.setOnClickListener {
             val currentWeight: Float = cardRulerCurrent.value

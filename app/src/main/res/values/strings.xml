@@ -45,13 +45,17 @@
 
     <string name="summary">Summary</string>
     <string name="enter_current_height">Enter current height</string>
+    <string name="enter_current_age">Enter current age</string>
     <string name="enter_goal_weight">Enter goal/desired weight</string>
 
     <string name="cm">cm</string>
+    <string name="age"> </string>
 
     <string name="delete">Delete</string>
 
     <string name="settings">Settings</string>
+
+    <string name="lists">List</string>
 
     <string name="development">Development</string>
     <string name="developer">Developer</string>
@@ -88,4 +92,7 @@
     <string name="show_limit_lines_summary">See the goal and the average weight on the graph chart</string>
     <string name="rate_us_from_google_play">Rate us on Google Play</string>
     <string name="goal_summary_format">%.1f %s left until you reach the goal</string>
+
+    <string name="female" translatable="false">Female</string>
+    <string name="male" translatable="false">Male</string>
 </resources>
