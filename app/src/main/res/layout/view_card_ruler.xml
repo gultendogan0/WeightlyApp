@@ -17,6 +17,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tfInputCurrentWeight"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -36,20 +37,20 @@
             android:id="@+id/rulerViewCurrent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
             app:centerLineColor="@color/green"
-            app:centerLineHeight="16dp"
+            app:centerLineHeight="8dp"
             app:numDigits="1"
             app:numMaxValue="300"
             app:numMinValue="5"
             app:numTextColor="@color/gray_500"
             app:numValue="75"
             app:sideLineColor="#bcbcbc"
-            app:sideLineHeight="8dp"
+            app:sideLineHeight="4dp"
             app:textSize="12sp"
-            app:textSpaceHeight="6dp" />
+            app:textSpaceHeight="3dp" />
 
     </LinearLayout>
 
