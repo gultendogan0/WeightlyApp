@@ -103,6 +103,10 @@
         android:id="@+id/listFragment"
         android:name="com.gultendogan.weightlyapp.ui.list.ListFragment"
         android:label="@string/lists"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <argument
+            android:name="currentWeight"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
