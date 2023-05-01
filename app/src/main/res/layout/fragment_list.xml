@@ -94,32 +94,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• 2 slices of wholemeal bread"
+                android:text="• 2 dilim kepekli ekmek"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• 2 slices of cheese"
+                android:text="• 2 dilim peynir"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• 10 olives"
+                android:text="• 10 zeytin"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• Unsweetened tea"
+                android:text="• Şekersiz çay"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -157,27 +159,12 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/afternoonMeal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="@dimen/space_4"
                 android:text="• Chicken or fish (100 g)"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• Yogurt ( 50 gr )"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• Salad"
                 android:textSize="14sp" />
 
 
@@ -216,6 +203,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/eveningMeal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
@@ -223,35 +211,6 @@
                 android:text="• vegetable meal (200 gr)"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• 1 bowl of soup"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• Yogurt ( 50 gr )"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="@dimen/space_4"
-                android:text="• Salad"
-                android:textSize="14sp" />
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
