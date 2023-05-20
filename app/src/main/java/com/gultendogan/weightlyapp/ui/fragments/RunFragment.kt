@@ -1,18 +1,24 @@
 package com.gultendogan.weightlyapp.ui.fragments
 
 import android.Manifest
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gultendogan.weightlyapp.R
+import com.gultendogan.weightlyapp.adapters.ItemTouchHelperAdapter
 import com.gultendogan.weightlyapp.adapters.RunAdapter
+import com.gultendogan.weightlyapp.db.Run
 import com.gultendogan.weightlyapp.other.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.gultendogan.weightlyapp.other.SortType
 import com.gultendogan.weightlyapp.other.TrackingUtility
@@ -23,11 +29,13 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 @AndroidEntryPoint
-class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
+class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks,
+    ItemTouchHelperAdapter {
 
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var runAdapter: RunAdapter
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,12 +71,55 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
+
+        runAdapter.notifyDataSetChanged()
     }
 
     private fun setupRecyclerView() = rvRuns.apply {
-        runAdapter = RunAdapter()
+        runAdapter = RunAdapter(::deleteRun)
         adapter = runAdapter
         layoutManager = LinearLayoutManager(requireContext())
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                onItemSwiped(position)
+            }
+        }
+        itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(this)
+
+    }
+
+    private fun deleteRun(run: Run) {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Delete Run")
+            .setMessage("Are you sure you want to delete this run?")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                viewModel.deleteRun(run)
+                Toast.makeText(requireContext(), "Run deleted", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton(android.R.string.no) { _, _ ->
+                runAdapter.notifyDataSetChanged()
+            }
+            .create()
+
+        dialog.show()
+    }
+
+    override fun onItemSwiped(position: Int) {
+        val run = runAdapter.differ.currentList[position]
+        deleteRun(run)
     }
 
     private fun requestPermissions() {

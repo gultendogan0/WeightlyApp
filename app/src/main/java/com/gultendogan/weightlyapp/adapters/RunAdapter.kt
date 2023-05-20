@@ -1,10 +1,13 @@
 package com.gultendogan.weightlyapp.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.gultendogan.weightlyapp.R
 import com.gultendogan.weightlyapp.db.Run
@@ -19,7 +22,8 @@ import kotlinx.android.synthetic.main.item_run.view.tvTime
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
+class RunAdapter(private val onDeleteClickListener: (Run) -> Unit) :
+    RecyclerView.Adapter<RunAdapter.RunViewHolder>(), ItemTouchHelperAdapter {
 
     inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -51,8 +55,15 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
         return differ.currentList.size
     }
 
+    override fun onItemSwiped(position: Int) {
+        val run = differ.currentList[position]
+        onDeleteClickListener.invoke(run)
+    }
+
     override fun onBindViewHolder(holder: RunViewHolder, position: Int) {
         val run = differ.currentList[position]
+        val itemView = holder.itemView
+
         holder.itemView.apply {
             Glide.with(this).load(run.img).into(ivRunImage)
 
@@ -72,6 +83,27 @@ class RunAdapter : RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
 
             val caloriesBurned = "${run.caloriesBurned} kcal"
             tvCalories.text = "Calories : " + caloriesBurned
+
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        // Set the background color to indicate selection or touch feedback
+                        itemView.setBackgroundColor(Color.LTGRAY)
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        // Reset the background color when touch is canceled
+                        itemView.setBackgroundColor(Color.WHITE)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        // Reset the background color when touch is released
+                        itemView.setBackgroundColor(Color.WHITE)
+                    }
+                }
+                true
+            }
         }
+
     }
+
+
 }

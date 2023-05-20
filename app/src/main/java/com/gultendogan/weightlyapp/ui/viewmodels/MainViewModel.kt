@@ -66,4 +66,8 @@ class MainViewModel @Inject constructor(
     fun insertRun(run: Run) = viewModelScope.launch {
         mainRepository.insertRun(run)
     }
+
+    fun deleteRun(run: Run) = viewModelScope.launch {
+        mainRepository.deleteRun(run)
+    }
 }
