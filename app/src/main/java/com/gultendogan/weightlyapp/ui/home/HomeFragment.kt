@@ -1,5 +1,6 @@
 package com.gultendogan.weightlyapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
@@ -13,6 +14,7 @@ import com.gultendogan.weightlyapp.ui.home.chart.ChartFeeder
 import com.gultendogan.weightlyapp.ui.home.chart.ChartInitializer
 import com.gultendogan.weightlyapp.ui.home.chart.ChartType
 import com.gultendogan.weightlyapp.R
+import com.gultendogan.weightlyapp.RunActivity
 import com.gultendogan.weightlyapp.databinding.FragmentHomeBinding
 import com.gultendogan.weightlyapp.domain.uimodel.WeightUIModel
 import com.gultendogan.weightlyapp.ui.home.adapter.WeightHistoryAdapter
@@ -196,6 +198,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_run -> {
+                val intent = Intent(context, RunActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.action_add -> {
                 findNavController().navigate(HomeFragmentDirections.actionNavigateAddWeight(null))
                 true

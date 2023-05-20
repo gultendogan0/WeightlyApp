@@ -4,4 +4,12 @@
         <item>@string/kg</item>
         <item>@string/lbs</item>
     </string-array>
+
+    <string-array name="filter_options">
+        <item>Date</item>
+        <item>Running Time</item>
+        <item>Distance</item>
+        <item>Average Speed</item>
+        <item>Calories Burned</item>
+    </string-array>
 </resources>
