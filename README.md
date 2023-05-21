@@ -1,6 +1,6 @@
 # WeightlyApp
 
-## Project Features :
+## :floppy_disk: Project Features :
 
 <div>:heavy_check_mark: Dagger - Hilt</div>
 <div>:heavy_check_mark: Kotlin , Coroutines , Flow</div>
@@ -15,6 +15,8 @@
 <div style="display: flex;">
 
 </br>
+
+## :camera_flash: Screenshot :
 
 | Splash | Login | Home Line | Home Bar | 
 |:-:|:-:|:-:|:-:|
