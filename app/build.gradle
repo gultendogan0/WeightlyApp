@@ -121,4 +121,6 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    implementation 'com.github.simformsolutions:SSCustomEditTextOutLineBorder:1.0.15'
+
 }

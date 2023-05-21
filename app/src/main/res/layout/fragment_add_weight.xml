@@ -7,44 +7,61 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_horizontal_margin">
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSelectDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_date"
+        android:background="@drawable/custom_button2"
+        android:paddingStart="@dimen/space_16"
+        android:paddingEnd="@dimen/space_16"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/prev_day"
+        android:background="@drawable/custom_button"
         android:textAllCaps="false"
+        android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next_day"
+        android:background="@drawable/custom_button"
         android:textAllCaps="false"
+        android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tfInputWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginTop="16dp"
         android:hint="@string/input_weight"
-        app:layout_constraintTop_toBottomOf="@+id/btnSelectDate">
+        app:layout_constraintTop_toBottomOf="@+id/btnSelectDate"
+        tools:layout_editor_absoluteX="16dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tilInputWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray_50"
             android:inputType="numberDecimal"
             android:maxLength="5" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tfInputNote"
         android:layout_width="match_parent"
@@ -54,16 +71,20 @@
         app:layout_constraintTop_toBottomOf="@+id/tfInputWeight">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tilInputNote"
+            android:background="@color/gray_50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEmoji"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_button"
         android:text="@string/select_emoji"
         android:textAllCaps="false"
+        android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tfInputNote" />
@@ -80,6 +101,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btnDelete"
         app:layout_constraintStart_toStartOf="@+id/btnEmoji"
         app:layout_constraintTop_toBottomOf="@+id/btnEmoji" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDelete"
         style="@style/Widget.MaterialComponents.Button.Icon"

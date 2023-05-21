@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
                 tools:text="Hedefine ulaşmana 10 kilo kaldı">
 

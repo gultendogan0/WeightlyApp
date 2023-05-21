@@ -104,7 +104,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Delete Run")
             .setMessage("Are you sure you want to delete this run?")
-            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setIcon(R.drawable.baseline_warning_24)
             .setPositiveButton(android.R.string.yes) { _, _ ->
                 viewModel.deleteRun(run)
                 Toast.makeText(requireContext(), "Run deleted", Toast.LENGTH_SHORT).show()
