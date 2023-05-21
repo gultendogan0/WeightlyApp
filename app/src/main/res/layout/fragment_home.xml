@@ -211,7 +211,6 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/space_8"
             android:layout_marginStart="@dimen/space_4"
-
             android:layout_marginBottom="8dp"
             android:text="@string/history"
             android:textAppearance="?android:textAppearanceLarge"

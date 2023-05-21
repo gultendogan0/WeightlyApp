@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.gultendogan.weightlyapp.other.Constants.ACTION_SHOW_TRACKING_FRAGMENT
 import com.gultendogan.weightlyapp.ui.viewmodels.MainViewModel

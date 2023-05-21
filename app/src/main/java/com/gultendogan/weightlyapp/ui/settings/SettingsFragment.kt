@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -11,6 +12,7 @@ import com.gultendogan.weightlyapp.R
 import androidx.preference.CheckBoxPreference
 import com.gultendogan.weightlyapp.BuildConfig
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import com.gultendogan.weightlyapp.uicomponents.MeasureUnit
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,11 +25,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preference, rootKey)
+        val goalWeightPreference = findPreference<EditTextPreference>("weight")
+        goalWeightPreference?.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+        goalWeightPreference?.setOnPreferenceChangeListener { preference, newValue ->
+            if (newValue is String) {
+                val weight = newValue.toFloatOrNull()
+                if (weight != null) {
+                    viewModel.updateGoalWeight(weight)
+                    preference.summary = newValue
+                } else {
+                    Toast.makeText(context,"Invalid value!",Toast.LENGTH_LONG).show()
+                }
+            }
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observe()
+        initViews()
     }
 
     private fun observe() {
@@ -39,14 +56,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun setUIState(uiState: SettingsViewModel.UiState) {
         val unitPreferences = findPreference<ListPreference>("unit")
         val limitLinePreference = findPreference<CheckBoxPreference>("show_limit_lines")
+        val goalWeightPreference = findPreference<EditTextPreference>("weight")
+
         limitLinePreference?.isChecked = uiState.shouldShowLimitLine
         unitPreferences?.value = MeasureUnit.findValue(uiState.unit).value
+
+        goalWeightPreference?.summaryProvider = null
+        goalWeightPreference?.summary = uiState.goalWeight.toString()
     }
 
     private fun initViews() {
         findPreference<Preference>("developer")?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                openUrl("https://www.linkedin.com/in/gülten-doğan-3a453721b/")
+                openUrl("https://github.com/gulten27")
                 true
             }
         findPreference<Preference>("source_code")?.onPreferenceClickListener =

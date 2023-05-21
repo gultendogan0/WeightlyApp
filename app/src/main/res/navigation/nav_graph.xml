@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/runFragment">
 
@@ -13,7 +13,8 @@
     <fragment
         android:id="@+id/runFragment"
         android:name="com.gultendogan.weightlyapp.ui.fragments.RunFragment"
-        android:label="RunFragment" >
+        android:label="Run"
+        tools:layout="@layout/fragment_run">
         <action
             android:id="@+id/action_runFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
@@ -22,11 +23,13 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.gultendogan.weightlyapp.ui.fragments.StatisticsFragment"
-        android:label="StatisticsFragment" />
+        android:label="Statistics"
+        tools:layout="@layout/fragment_statistics"/>
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.gultendogan.weightlyapp.ui.fragments.TrackingFragment"
-        android:label="TrackingFragment" >
+        android:label="Tracking"
+        tools:layout="@layout/fragment_tracking">
         <action
             android:id="@+id/action_trackingFragment_to_runFragment"
             app:destination="@id/runFragment" />

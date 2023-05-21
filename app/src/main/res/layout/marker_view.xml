@@ -4,14 +4,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/gray_100"
+    app:cardBackgroundColor="@color/purple_200"
     app:cardCornerRadius="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/tvDate"
@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:text="DATE"
             android:textSize="10sp"
+            android:textColor="@color/white"
             android:gravity="center"/>
 
         <TextView
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="DURATION"
             android:textSize="10sp"
+            android:textColor="@color/white"
             android:gravity="center"/>
 
         <TextView
@@ -35,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="AVG SPEED"
             android:textSize="10sp"
+            android:textColor="@color/white"
             android:gravity="center"/>
 
         <TextView
@@ -43,6 +46,7 @@
             android:layout_height="wrap_content"
             android:text="DISTANCE"
             android:textSize="10sp"
+            android:textColor="@color/white"
             android:gravity="center"/>
 
         <TextView
@@ -51,6 +55,7 @@
             android:layout_height="wrap_content"
             android:text="CALORIES BURNED"
             android:textSize="10sp"
+            android:textColor="@color/white"
             android:gravity="center"/>
 
     </LinearLayout>

@@ -23,6 +23,12 @@
             app:title="@string/unit"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            app:key="weight"
+            app:icon="@drawable/baseline_monitor_weight_24"
+            app:title="Goal Weight"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
 

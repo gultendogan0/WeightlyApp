@@ -33,9 +33,14 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
         Hawk.put(Constants.Prefs.KEY_GOAL_WEIGHT_UNIT, MeasureUnit.findValue(unit).value)
     }
 
+    fun updateGoalWeight(goalWeight: Float) {
+        Hawk.put(Constants.Prefs.KEY_GOAL_WEIGHT, goalWeight)
+    }
+
     fun updateLimitLine(shouldShowLimitLine: Boolean) {
         Hawk.put(Constants.Prefs.KEY_CHART_LIMIT_LINE, shouldShowLimitLine)
     }
+
     data class UiState(
         var unit: String? = null,
         var goalWeight: Float? = null,
