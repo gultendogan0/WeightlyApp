@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.gultendogan.weightlyapp.other.Constants.ACTION_SHOW_TRACKING_FRAGMENT
+import com.gultendogan.weightlyapp.ui.fragments.TrackingFragment
 import com.gultendogan.weightlyapp.ui.viewmodels.MainViewModel
 import com.gultendogan.weightlyapp.ui.viewmodels.MainViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,11 @@ class RunActivity : AppCompatActivity() {
         if (intent.action == ACTION_SHOW_TRACKING_FRAGMENT) {
             navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 }
 

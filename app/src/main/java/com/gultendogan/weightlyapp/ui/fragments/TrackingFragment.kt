@@ -3,7 +3,6 @@ package com.gultendogan.weightlyapp.ui.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,14 +17,12 @@ import com.gultendogan.weightlyapp.other.Constants.POLYLINE_COLOR
 import com.gultendogan.weightlyapp.other.Constants.POLYLINE_WIDTH
 import com.gultendogan.weightlyapp.other.TrackingUtility
 import com.gultendogan.weightlyapp.services.Polyline
-import com.gultendogan.weightlyapp.services.Polylines
 import com.gultendogan.weightlyapp.services.TrackingService
 import com.gultendogan.weightlyapp.ui.viewmodels.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
@@ -86,6 +83,8 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         }
 
         subscribeToObservers()
+
+        onBackPressed()
     }
 
     private fun subscribeToObservers() {
@@ -270,4 +269,13 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         super.onSaveInstanceState(outState)
         mapView?.onSaveInstanceState(outState)
     }
+
+    fun onBackPressed() {
+        val currentFragment = parentFragmentManager.findFragmentById(R.id.runFragment)
+        if (currentFragment != null && currentFragment is TrackingFragment) {
+            // TrackingFragment'ı kapatmak için popBackStack() metodunu kullanabilirsiniz.
+            parentFragmentManager.popBackStack()
+        }
+    }
+
 }
