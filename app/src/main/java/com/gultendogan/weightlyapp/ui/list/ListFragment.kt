@@ -1,6 +1,7 @@
 package com.gultendogan.weightlyapp.ui.list
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -69,34 +70,68 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         var afternoonMealString = ""
         var eveningMealString = ""
 
-        for (foodModel in foodModels!!) {
-            if (totalCalorie + foodModel.calorie.toInt() <= dailyCalorie) {
-                totalCalorie += foodModel.calorie.toInt()
-                mealCount++
-                println("• ${foodModel.food} (${foodModel.gr} gr)\n")
-                afternoonMealString += "• ${foodModel.food} (${foodModel.gr} gr)\n"
+        val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        val savedAfternoonMealString = sharedPrefs.getString("afternoonMealString", "")
+        val savedEveningMealString = sharedPrefs.getString("eveningMealString", "")
+
+        if (savedAfternoonMealString.isNullOrEmpty() || isTimeToUpdate(sharedPrefs, "afternoonMealUpdateTime")) {
+            for (foodModel in foodModels!!) {
+                if (totalCalorie + foodModel.calorie.toInt() <= dailyCalorie) {
+                    totalCalorie += foodModel.calorie.toInt()
+                    mealCount++
+                    println("• ${foodModel.food} (${foodModel.gr} gr)\n")
+                    afternoonMealString += "• ${foodModel.food} (${foodModel.gr} gr)\n"
+                }
+                if (totalCalorie >= dailyCalorie) {
+                    break
+                }
             }
-            if (totalCalorie >= dailyCalorie) {
-                break
-            }
+            binding.afternoonMeal.setText(afternoonMealString)
+
+            editor.putString("afternoonMealString", afternoonMealString)
+            editor.putLong("afternoonMealUpdateTime", System.currentTimeMillis())
+            editor.apply()
+        } else {
+            afternoonMealString = savedAfternoonMealString
+            binding.afternoonMeal.setText(afternoonMealString)
         }
-        binding.afternoonMeal.setText(afternoonMealString)
 
         Collections.shuffle(foodModels)
         totalCalorie = 0
         mealCount = 0
-        for (foodModel in foodModels!!) {
-            if (totalCalorie + foodModel.calorie.toInt() <= dailyCalorie) {
-                totalCalorie += foodModel.calorie.toInt()
-                mealCount++
-                println("- ${foodModel.food} (${foodModel.gr} gr)\n")
-                eveningMealString += "• ${foodModel.food} (${foodModel.gr} gr)\n"
+
+        if (savedEveningMealString.isNullOrEmpty() || isTimeToUpdate(sharedPrefs, "eveningMealUpdateTime")) {
+            for (foodModel in foodModels!!) {
+                if (totalCalorie + foodModel.calorie.toInt() <= dailyCalorie) {
+                    totalCalorie += foodModel.calorie.toInt()
+                    mealCount++
+                    println("• ${foodModel.food} (${foodModel.gr} gr)\n")
+                    eveningMealString += "• ${foodModel.food} (${foodModel.gr} gr)\n"
+                }
+                if (totalCalorie >= dailyCalorie) {
+                    break
+                }
             }
-            if (totalCalorie >= dailyCalorie) {
-                break
-            }
+            binding.eveningMeal.setText(eveningMealString)
+
+            editor.putString("eveningMealString", eveningMealString)
+            editor.putLong("eveningMealUpdateTime", System.currentTimeMillis())
+            editor.apply()
+        } else {
+            eveningMealString = savedEveningMealString.toString()
+            binding.eveningMeal.setText(eveningMealString)
         }
-        binding.eveningMeal.setText(eveningMealString)
+    }
+
+    private fun isTimeToUpdate(sharedPrefs: SharedPreferences, key: String): Boolean {
+        val lastUpdateTime = sharedPrefs.getLong(key, 0)
+        val currentTime = System.currentTimeMillis()
+        //val oneHourInMillis = 60 * 60 * 1000 // 1 saat
+        //val oneHourInMillis = 6 * 1000 // 1 dakika
+        val oneHourInMillis = 24 * 60 * 60 * 1000 // 24 saat
+
+        return currentTime - lastUpdateTime >= oneHourInMillis
     }
 
     override fun onCreateView(
